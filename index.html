@@ -6,8 +6,8 @@
 <title>টাইপিং প্র্যাকটিস</title>
 
 <!-- ===== আইকন ===== -->
-<link rel="icon" type="image/png" href="icon-512.png">
-<link rel="apple-touch-icon" href="icon-512.png">
+<link rel="icon" type="image/png" href="icon-512-01.png">
+<link rel="apple-touch-icon" href="icon-512-01.png">
 
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, sans-serif; }
@@ -74,7 +74,6 @@
     color:#fff; border-color:transparent;
   }
 
-  /* প্যাংগ্রাম কার্ডের বিশেষ স্টাইল */
   .opt-btn.pangram-btn {
     background:linear-gradient(135deg,#f39c12,#e74c3c);
     color:#fff;
@@ -390,8 +389,19 @@
   <div class="menu" id="menu">
     <h1>⌨️ টাইপিং প্র্যাকটিস</h1>
 
-    <!-- বিজ্ঞাপনের জায়গা ১ -->
-    <div class="ad-slot" id="adTop"></div>
+    <!-- ===== বিজ্ঞাপনের জায়গা ১ (Top Banner 728x90) ===== -->
+    <div class="ad-slot" id="adTop">
+      <script>
+        atOptions = {
+          'key' : '567a76c37ef779af7433f0eb650ee08d',
+          'format' : 'iframe',
+          'height' : 90,
+          'width' : 728,
+          'params' : {}
+        };
+      </script>
+      <script src="https://www.highrevenueformat.com/567a76c37ef779af7433f0eb650ee08d/invoke.js"></script>
+    </div>
 
     <div class="section-label">শিক্ষার্থীর নাম (ঐচ্ছিক)</div>
     <input type="text" class="name-input" id="studentName"
@@ -445,8 +455,11 @@
 
     <button class="start-btn" onclick="startGame()">শুরু করুন 🚀</button>
 
-    <!-- বিজ্ঞাপনের জায়গা ২ -->
-    <div class="ad-slot" id="adBottom"></div>
+    <!-- ===== বিজ্ঞাপনের জায়গা ২ (Native Banner) ===== -->
+    <div class="ad-slot" id="adBottom">
+      <script async="async" data-cfasync="false" src="https://pl31708898.profitableratecpmnetwork.com/6888cea359357c944dbaf1bad6d518a2/invoke.js"></script>
+      <div id="container-6888cea359357c944dbaf1bad6d518a2"></div>
+    </div>
   </div>
 
   <!-- ===== গেম ===== -->
@@ -484,7 +497,7 @@
       <div class="result-card time-card"><div class="num" id="rTime">0s</div><div class="title">সময়</div></div>
     </div>
 
-    <!-- বিজ্ঞাপনের জায়গা ৩ -->
+    <!-- ===== বিজ্ঞাপনের জায়গা ৩ (এখন খালি) ===== -->
     <div class="ad-slot" id="adResult"></div>
 
     <div class="result-actions">
@@ -671,7 +684,6 @@ try {
 } catch(e){ CUSTOM_TEXTS = {}; }
 
 function getTextPool(lang, cat, level){
-  // প্যাংগ্রাম কার্ড — শুধু একটি বাক্য, সব লেভেলে
   if(cat === 'pangram'){
     return [PANGRAM];
   }
@@ -766,7 +778,6 @@ document.querySelectorAll('#catOptions .opt-btn').forEach(btn => {
     btn.classList.add('active');
     selectedCat = btn.dataset.cat;
 
-    // প্যাংগ্রাম কার্ডে ক্লিক করলে অটো ইংরেজি মোডে চলে যাবে
     if(selectedCat === 'pangram'){
       setLang('en');
       document.body.className = 'cat-pangram';
@@ -1188,8 +1199,9 @@ document.addEventListener('keydown', (e) => {
 </script>
 
 <!-- =========================================================
-     ADSTERRA AD SCRIPT প্লেসহোল্ডার
+     Social Bar Ad Code (Social Bar)
      ========================================================= -->
+<script src="https://pl31708899.profitableratecpmnetwork.com/a6/7e/a4/a67ea4139bbe9863db7ae3d25170e0ff.js"></script>
 
 <script>
 function loadAdsIfOnline(){
@@ -1199,7 +1211,6 @@ function loadAdsIfOnline(){
   }
   document.querySelectorAll('.ad-slot').forEach(s => s.style.display = 'flex');
 }
-
 window.addEventListener('load', loadAdsIfOnline);
 window.addEventListener('adsterra-online', loadAdsIfOnline);
 </script>
