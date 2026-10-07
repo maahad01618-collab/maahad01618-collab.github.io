@@ -389,7 +389,7 @@
   <div class="menu" id="menu">
     <h1>⌨️ টাইপিং প্র্যাকটিস</h1>
 
-    <!-- ===== বিজ্ঞাপনের জায়গা ১ (Top Banner 728x90) ===== -->
+    <!-- ===== বিজ্ঞাপনের জায়গা ১ (শুধু Top Banner 728x90) ===== -->
     <div class="ad-slot" id="adTop">
       <script>
         atOptions = {
@@ -455,11 +455,8 @@
 
     <button class="start-btn" onclick="startGame()">শুরু করুন 🚀</button>
 
-    <!-- ===== বিজ্ঞাপনের জায়গা ২ (Native Banner) ===== -->
-    <div class="ad-slot" id="adBottom">
-      <script async="async" data-cfasync="false" src="https://pl31708898.profitableratecpmnetwork.com/6888cea359357c944dbaf1bad6d518a2/invoke.js"></script>
-      <div id="container-6888cea359357c944dbaf1bad6d518a2"></div>
-    </div>
+    <!-- ===== বিজ্ঞাপনের জায়গা ২ (এখন খালি) ===== -->
+    <div class="ad-slot" id="adBottom"></div>
   </div>
 
   <!-- ===== গেম ===== -->
@@ -1198,18 +1195,17 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-<!-- =========================================================
-     Social Bar Ad Code (Social Bar)
-     ========================================================= -->
-<script src="https://pl31708899.profitableratecpmnetwork.com/a6/7e/a4/a67ea4139bbe9863db7ae3d25170e0ff.js"></script>
-
 <script>
 function loadAdsIfOnline(){
   if(!navigator.onLine){
     document.querySelectorAll('.ad-slot').forEach(s => s.style.display = 'none');
     return;
   }
-  document.querySelectorAll('.ad-slot').forEach(s => s.style.display = 'flex');
+  document.querySelectorAll('.ad-slot').forEach(s => {
+    // শুধু adTop-এ অ্যাড আছে, অন্যগুলো ফাঁকা
+    if(s.innerHTML.trim() !== '') s.style.display = 'flex';
+    else s.style.display = 'none';
+  });
 }
 window.addEventListener('load', loadAdsIfOnline);
 window.addEventListener('adsterra-online', loadAdsIfOnline);
