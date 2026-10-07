@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>টাইপিং প্র্যাকটিস</title>
+
+<!-- ===== আইকন ===== -->
+<link rel="icon" type="image/png" href="icon-512-01.png">
+<link rel="apple-touch-icon" href="icon-512-01.png">
+
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, sans-serif; }
 
@@ -801,14 +806,12 @@ function getRandomSentence(){
   if(!pool || pool.length === 0){
     return currentLang === 'bn' ? "নিজের টেক্সট যোগ করুন" : "Please add your own text";
   }
-  // প্যাংগ্রাম কার্ডে শুধু একটাই বাক্য — সেটাই ফেরত
   if(selectedCat === 'pangram') return PANGRAM;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
 /* ====== গেম শুরু (নাম অপশনাল) ====== */
 function startGame(){
-  // নাম অপশনাল — না দিলেও খেলা চলবে
   const nameInput = document.getElementById('studentName');
   const name = nameInput.value.trim();
 
@@ -821,7 +824,6 @@ function startGame(){
     }, 2500);
   }
 
-  // কাস্টম টাইম
   const customActive = document.querySelector('[data-time="custom"]').classList.contains('active');
   if(customActive){
     const val  = parseInt(document.getElementById('customValue').value) || 1;
@@ -831,7 +833,6 @@ function startGame(){
     if(selectedTime > 3600) selectedTime = 3600;
   }
 
-  // কাস্টম টেক্সট চেক
   if(selectedCat === 'custom'){
     const pool = getTextPool(currentLang, 'custom', selectedLevel);
     if(!pool || pool.length === 0){
@@ -841,12 +842,10 @@ function startGame(){
     }
   }
 
-  // প্যাংগ্রাম কার্ড হলে অটো ইংরেজি
   if(selectedCat === 'pangram'){
     setLang('en');
   }
 
-  // বডি ক্লাস
   document.body.className = 'cat-' + (selectedCat === 'custom' ? 'general' : selectedCat);
   if(!navigator.onLine) document.body.classList.add('offline');
 
@@ -1199,8 +1198,6 @@ function loadAdsIfOnline(){
     return;
   }
   document.querySelectorAll('.ad-slot').forEach(s => s.style.display = 'flex');
-
-  // ⚠️ এখানে চাইলে আপনার Adsterra script inject করতে পারেন
 }
 
 window.addEventListener('load', loadAdsIfOnline);
