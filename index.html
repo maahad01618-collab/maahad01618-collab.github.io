@@ -11,11 +11,13 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, sans-serif; }
 
+  html, body { height:100%; overflow:hidden; }
+
   body {
     min-height:100vh;
-    display:flex; justify-content:center; align-items:flex-start;
+    display:flex; justify-content:center; align-items:center;
     background: linear-gradient(135deg,#667eea,#764ba2);
-    padding:20px;
+    padding:10px;
     transition: background 0.5s;
   }
 
@@ -28,46 +30,61 @@
   body.cat-pangram { background: linear-gradient(135deg,#f39c12,#e74c3c); }
 
   .container {
-    width:100%; max-width:900px;
-    background:rgba(255,255,255,0.97);
-    border-radius:20px;
-    padding:30px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.25);
-    margin:20px auto;
+    width:100%; max-width:1000px;
+    height:calc(100vh - 20px);
+    max-height:calc(100vh - 20px);
+    background:rgba(255,255,255,0.98);
+    border-radius:16px;
+    padding:15px 22px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
   }
 
-  h1 { text-align:center; margin-bottom:20px; color:#333; font-size:26px; }
+  .scroll-area {
+    flex:1;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-right:5px;
+  }
+  .scroll-area::-webkit-scrollbar { width:6px; }
+  .scroll-area::-webkit-scrollbar-track { background:#f0f0f0; border-radius:3px; }
+  .scroll-area::-webkit-scrollbar-thumb { background:#bbb; border-radius:3px; }
+  .scroll-area::-webkit-scrollbar-thumb:hover { background:#888; }
+
+  h1 { text-align:center; margin-bottom:8px; color:#333; font-size:20px; }
 
   .menu { text-align:center; }
 
   .section-label {
-    font-weight:bold; color:#555; margin:18px 0 10px;
-    font-size:15px; text-align:left;
-    border-left:4px solid #667eea; padding-left:10px;
+    font-weight:bold; color:#555; margin:8px 0 5px;
+    font-size:12px; text-align:left;
+    border-left:3px solid #667eea; padding-left:8px;
     display:flex; justify-content:space-between; align-items:center;
   }
 
   .section-label .mini-btn {
-    font-size:12px; padding:5px 12px;
+    font-size:11px; padding:4px 10px;
     background:#667eea; color:#fff; border:none;
-    border-radius:8px; cursor:pointer;
+    border-radius:6px; cursor:pointer;
   }
 
   .options {
-    display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+    display:flex; flex-wrap:wrap; gap:6px; justify-content:center;
   }
 
   .opt-btn {
-    padding:11px 20px;
+    padding:7px 13px;
     border:2px solid #ddd;
-    border-radius:12px;
+    border-radius:8px;
     background:#fff;
     cursor:pointer;
-    font-size:15px;
+    font-size:12px;
     font-weight:600;
-    transition:all 0.25s;
+    transition:all 0.2s;
   }
-  .opt-btn:hover { transform:translateY(-2px); box-shadow:0 6px 15px rgba(0,0,0,0.15); }
+  .opt-btn:hover { transform:translateY(-1px); box-shadow:0 4px 10px rgba(0,0,0,0.12); }
   .opt-btn.active {
     background:linear-gradient(135deg,#667eea,#764ba2);
     color:#fff; border-color:transparent;
@@ -75,274 +92,255 @@
 
   .opt-btn.pangram-btn {
     background:linear-gradient(135deg,#f39c12,#e74c3c);
-    color:#fff;
-    border-color:transparent;
-    font-weight:bold;
+    color:#fff; border-color:transparent; font-weight:bold;
   }
-  .opt-btn.pangram-btn:hover {
-    transform:translateY(-2px) scale(1.03);
-    box-shadow:0 8px 20px rgba(231,76,60,0.4);
-  }
+  .opt-btn.pangram-btn:hover { transform:translateY(-1px) scale(1.02); }
   .opt-btn.pangram-btn.active {
     background:linear-gradient(135deg,#c0392b,#8e0000);
-    box-shadow:0 0 0 3px rgba(243,156,18,0.4);
+    box-shadow:0 0 0 2px rgba(243,156,18,0.4);
   }
 
-  /* মোড টগল */
   .mode-toggle {
     display:flex; justify-content:center; gap:0;
-    margin:0 auto 10px; max-width:500px;
-    border:2px solid #667eea; border-radius:12px; overflow:hidden;
+    margin:0 auto 5px; max-width:400px;
+    border:2px solid #667eea; border-radius:8px; overflow:hidden;
   }
   .mode-toggle button {
-    flex:1; padding:14px 10px; border:none; background:#fff;
-    cursor:pointer; font-size:15px; font-weight:bold; color:#667eea;
-    transition:all 0.25s;
+    flex:1; padding:9px 8px; border:none; background:#fff;
+    cursor:pointer; font-size:12px; font-weight:bold; color:#667eea;
+    transition:all 0.2s;
   }
-  .mode-toggle button.active {
-    background:linear-gradient(135deg,#667eea,#764ba2); color:#fff;
-  }
-  .mode-toggle button.race-active {
-    background:linear-gradient(135deg,#f39c12,#e74c3c); color:#fff;
-  }
+  .mode-toggle button.active { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; }
+  .mode-toggle button.race-active { background:linear-gradient(135deg,#f39c12,#e74c3c); color:#fff; }
 
-  /* রেস সেটিংস */
   .race-settings {
     display:none;
     background:#fff9f0;
     border:2px dashed #f39c12;
-    border-radius:12px;
-    padding:15px;
-    margin-top:12px;
+    border-radius:8px;
+    padding:9px;
+    margin-top:6px;
   }
   .race-settings.show { display:block; }
 
   .race-row {
     display:flex; justify-content:center; align-items:center;
-    gap:10px; margin-bottom:10px; flex-wrap:wrap;
+    gap:8px; margin-bottom:5px; flex-wrap:wrap;
   }
-  .race-row label {
-    font-weight:bold; color:#555; font-size:14px;
-  }
-  .race-row select, .race-row input {
-    padding:8px 12px; font-size:14px;
-    border:2px solid #ddd; border-radius:8px;
+  .race-row:last-child { margin-bottom:0; }
+  .race-row label { font-weight:bold; color:#555; font-size:11px; }
+  .race-row select {
+    padding:5px 9px; font-size:11px;
+    border:2px solid #ddd; border-radius:6px;
     outline:none; cursor:pointer;
   }
-  .race-row select:focus, .race-row input:focus { border-color:#f39c12; }
+  .race-row select:focus { border-color:#f39c12; }
 
   .lang-toggle {
     display:flex; justify-content:center; gap:0;
-    margin:0 auto 10px; max-width:340px;
-    border:2px solid #667eea; border-radius:12px; overflow:hidden;
+    margin:0 auto 5px; max-width:280px;
+    border:2px solid #667eea; border-radius:8px; overflow:hidden;
   }
   .lang-toggle button {
-    flex:1; padding:12px; border:none; background:#fff;
-    cursor:pointer; font-size:15px; font-weight:bold; color:#667eea;
-    transition:all 0.25s;
+    flex:1; padding:8px; border:none; background:#fff;
+    cursor:pointer; font-size:12px; font-weight:bold; color:#667eea;
+    transition:all 0.2s;
   }
-  .lang-toggle button.active {
-    background:linear-gradient(135deg,#667eea,#764ba2); color:#fff;
-  }
+  .lang-toggle button.active { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; }
 
   .custom-time {
     display:none; justify-content:center; align-items:center;
-    gap:10px; margin-top:12px;
+    gap:8px; margin-top:6px;
   }
   .custom-time input {
-    width:90px; padding:10px; font-size:16px;
-    border:2px solid #ddd; border-radius:10px;
+    width:70px; padding:7px; font-size:12px;
+    border:2px solid #ddd; border-radius:7px;
     text-align:center; outline:none;
   }
   .custom-time input:focus { border-color:#667eea; }
-  .custom-time span { font-weight:bold; color:#555; }
+  .custom-time span { font-weight:bold; color:#555; font-size:11px; }
   .custom-time select {
-    padding:10px; font-size:15px; border:2px solid #ddd;
-    border-radius:10px; outline:none; cursor:pointer;
+    padding:7px; font-size:11px; border:2px solid #ddd;
+    border-radius:7px; outline:none; cursor:pointer;
   }
 
   .name-input {
-    width:100%; max-width:400px;
-    padding:14px; font-size:16px;
-    border:2px solid #ddd; border-radius:12px;
+    width:100%; max-width:320px;
+    padding:9px; font-size:13px;
+    border:2px solid #ddd; border-radius:8px;
     outline:none; text-align:center;
     transition:border 0.3s;
   }
   .name-input:focus { border-color:#667eea; }
 
   .start-btn {
-    margin-top:28px;
-    padding:15px 60px;
-    font-size:18px; font-weight:bold;
-    border:none; border-radius:14px;
+    margin-top:10px;
+    padding:11px 45px;
+    font-size:15px; font-weight:bold;
+    border:none; border-radius:10px;
     background:linear-gradient(135deg,#11998e,#38ef7d);
     color:#fff; cursor:pointer;
-    transition:all 0.25s;
+    transition:all 0.2s;
+    box-shadow:0 4px 12px rgba(17,153,142,0.3);
   }
-  .start-btn:hover { transform:scale(1.05); box-shadow:0 10px 25px rgba(17,153,142,0.4); }
+  .start-btn:hover { transform:scale(1.03); box-shadow:0 6px 18px rgba(17,153,142,0.4); }
 
-  /* বিজ্ঞাপনের জায়গা */
+  /* ===== অ্যাড স্লট ===== */
   .ad-slot {
-    margin:20px auto;
-    padding:12px;
+    margin:8px auto;
+    padding:8px 6px 6px;
     background:#f9f9f9;
-    border:1px dashed #ccc;
-    border-radius:12px;
+    border:1px dashed #ddd;
+    border-radius:8px;
     text-align:center;
     min-height:60px;
+    max-height:110px;
     display:flex;
     justify-content:center;
     align-items:center;
     color:#999;
-    font-size:13px;
+    font-size:11px;
     overflow:hidden;
     position:relative;
   }
   .ad-slot::before {
     content:"বিজ্ঞাপন";
     position:absolute;
-    font-size:10px;
-    color:#bbb;
-    top:4px; left:8px;
+    font-size:9px;
+    color:#ccc;
+    top:2px; left:6px;
+  }
+  #adTop, #adBottom, #adResult {
+    min-height:95px;
+    max-height:105px;
   }
   body.offline .ad-slot { display:none !important; }
 
   /* গেম */
-  .game { display:none; }
+  .game { display:none; height:100%; flex-direction:column; overflow:hidden; }
 
   .game-top {
     display:flex; justify-content:space-between; align-items:center;
-    margin-bottom:14px;
+    margin-bottom:6px;
   }
 
-  .game-title { font-size:16px; font-weight:bold; color:#555; }
+  .game-title { font-size:13px; font-weight:bold; color:#555; }
 
   .back-btn {
-    padding:9px 20px;
+    padding:5px 13px;
     background:#fff; color:#e74c3c;
-    border:2px solid #e74c3c; border-radius:10px;
-    cursor:pointer; font-size:14px; font-weight:bold;
+    border:2px solid #e74c3c; border-radius:7px;
+    cursor:pointer; font-size:11px; font-weight:bold;
     transition:all 0.2s;
   }
-  .back-btn:hover {
-    background:#e74c3c; color:#fff;
-    transform:scale(1.05);
-  }
+  .back-btn:hover { background:#e74c3c; color:#fff; transform:scale(1.03); }
 
-  /* রেস ট্র্যাক */
   .race-track {
     display:none;
     background:#f7f7ff;
     border:2px solid #667eea;
-    border-radius:14px;
-    padding:15px;
-    margin-bottom:18px;
+    border-radius:9px;
+    padding:6px 9px;
+    margin-bottom:6px;
   }
   .race-track.show { display:block; }
 
   .race-track-title {
-    font-size:14px; font-weight:bold; color:#667eea;
-    margin-bottom:12px; text-align:center;
+    font-size:10px; font-weight:bold; color:#667eea;
+    margin-bottom:5px; text-align:center;
   }
 
   .race-lane {
     display:flex; align-items:center;
-    gap:8px; margin-bottom:8px;
-    padding:6px 10px;
-    border-radius:8px;
-    transition:background 0.2s;
+    gap:5px; margin-bottom:3px;
+    padding:2px 5px;
+    border-radius:5px;
   }
+  .race-lane:last-child { margin-bottom:0; }
   .race-lane.you {
     background:#e6fff5;
     border:1px solid #11998e;
   }
   .race-lane .lane-name {
-    font-size:13px; font-weight:bold; color:#333;
-    width:100px; text-align:right;
+    font-size:10px; font-weight:bold; color:#333;
+    width:65px; text-align:right;
     flex-shrink:0;
     overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
   }
   .race-lane.you .lane-name { color:#11998e; }
   .race-lane .lane-track {
     flex:1;
-    height:22px;
+    height:14px;
     background:#e8e8e8;
-    border-radius:11px;
+    border-radius:7px;
     position:relative;
     overflow:hidden;
   }
   .race-lane .lane-fill {
     height:100%;
     background:linear-gradient(90deg,#667eea,#764ba2);
-    border-radius:11px;
+    border-radius:7px;
     width:0%;
     transition:width 0.4s ease;
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    padding-right:6px;
-    font-size:12px;
-    color:#fff;
-    font-weight:bold;
   }
-  .race-lane.you .lane-fill {
-    background:linear-gradient(90deg,#11998e,#38ef7d);
-  }
+  .race-lane.you .lane-fill { background:linear-gradient(90deg,#11998e,#38ef7d); }
   .race-lane .lane-wpm {
-    font-size:12px; font-weight:bold; color:#666;
-    width:55px; text-align:right;
+    font-size:10px; font-weight:bold; color:#666;
+    width:45px; text-align:right;
     flex-shrink:0;
   }
   .race-lane.you .lane-wpm { color:#11998e; }
-
   .race-lane .rank-badge {
-    width:24px; text-align:center;
-    font-size:15px; flex-shrink:0;
+    width:18px; text-align:center;
+    font-size:11px; flex-shrink:0;
   }
 
   .stats {
     display:flex; justify-content:space-around;
-    margin-bottom:18px;
-    background:#f5f5f5; padding:14px; border-radius:12px;
-    flex-wrap:wrap; gap:10px;
+    margin-bottom:6px;
+    background:#f5f5f5; padding:7px; border-radius:8px;
+    gap:5px;
   }
-  .stat { text-align:center; flex:1; min-width:70px; }
-  .stat .val { font-size:22px; font-weight:bold; color:#667eea; }
-  .stat .lbl { font-size:12px; color:#777; margin-top:3px; }
+  .stat { text-align:center; flex:1; }
+  .stat .val { font-size:16px; font-weight:bold; color:#667eea; line-height:1; }
+  .stat .lbl { font-size:9px; color:#777; margin-top:2px; }
 
   .text-display {
-    font-size:21px; line-height:2;
-    padding:22px; background:#fafafa;
-    border-radius:12px; border:2px solid #eee;
-    margin-bottom:18px;
-    letter-spacing:0.5px;
-    height:200px;
+    font-size:17px; line-height:1.55;
+    padding:12px; background:#fafafa;
+    border-radius:9px; border:2px solid #eee;
+    margin-bottom:6px;
+    flex:1;
+    min-height:70px;
+    max-height:140px;
     overflow-y:auto;
     user-select:none;
     word-wrap:break-word;
     scroll-behavior:smooth;
   }
+  .text-display::-webkit-scrollbar { width:5px; }
+  .text-display::-webkit-scrollbar-thumb { background:#ccc; border-radius:3px; }
 
-  .text-display span.correct { color:#11998e; background:#e6fff5; border-radius:3px; }
-  .text-display span.wrong   { color:#e74c3c; background:#ffe6e6; border-radius:3px; text-decoration:underline; }
-  .text-display span.current { background:#ffeaa7; border-radius:3px; }
+  .text-display span.correct { color:#11998e; background:#e6fff5; border-radius:2px; }
+  .text-display span.wrong   { color:#e74c3c; background:#ffe6e6; border-radius:2px; text-decoration:underline; }
+  .text-display span.current { background:#ffeaa7; border-radius:2px; }
 
   .input-box {
-    width:100%; padding:16px; font-size:18px;
-    border:2px solid #ddd; border-radius:12px;
+    width:100%; padding:11px; font-size:15px;
+    border:2px solid #ddd; border-radius:8px;
     outline:none; transition:border 0.2s;
   }
   .input-box:focus { border-color:#667eea; }
   .input-box.shake { animation: shake 0.3s; border-color:#e74c3c; }
   @keyframes shake {
     0%,100% { transform:translateX(0); }
-    25% { transform:translateX(-6px); }
-    75% { transform:translateX(6px); }
+    25% { transform:translateX(-5px); }
+    75% { transform:translateX(5px); }
   }
 
   .progress-bar {
-    height:8px; background:#eee; border-radius:5px;
-    margin-top:12px; overflow:hidden;
+    height:5px; background:#eee; border-radius:3px;
+    margin-top:5px; overflow:hidden;
   }
   .progress-fill {
     height:100%; width:100%;
@@ -351,44 +349,43 @@
   }
 
   /* রেজাল্ট */
-  .result { display:none; text-align:center; }
-  .result h2 { font-size:26px; margin-bottom:8px; color:#333; }
-  .result .student-name { font-size:16px; color:#666; margin-bottom:20px; }
+  .result { display:none; text-align:center; height:100%; overflow-y:auto; padding-right:5px; }
+  .result h2 { font-size:20px; margin-bottom:5px; color:#333; }
+  .result .student-name { font-size:13px; color:#666; margin-bottom:10px; }
 
   .result-grid {
-    display:grid; grid-template-columns:1fr 1fr;
-    gap:15px; margin:20px 0;
+    display:grid; grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:8px; margin:10px 0;
   }
-  .result-card { padding:20px; border-radius:14px; background:#f7f7f7; }
-  .result-card .num { font-size:32px; font-weight:bold; }
-  .result-card .title { font-size:14px; color:#666; margin-top:5px; }
+  .result-card { padding:10px; border-radius:9px; background:#f7f7f7; }
+  .result-card .num { font-size:22px; font-weight:bold; }
+  .result-card .title { font-size:10px; color:#666; margin-top:2px; }
 
   .wpm-card .num  { color:#667eea; }
   .acc-card .num  { color:#11998e; }
   .err-card .num  { color:#e74c3c; }
   .time-card .num { color:#f39c12; }
 
-  /* ফাইনাল র‍্যাংকিং */
   .final-ranking {
     display:none;
     background:#f7f7ff;
     border:2px solid #667eea;
-    border-radius:14px;
-    padding:18px;
-    margin:20px 0;
+    border-radius:9px;
+    padding:10px;
+    margin:8px 0;
     text-align:left;
   }
   .final-ranking.show { display:block; }
   .final-ranking h3 {
     text-align:center; color:#667eea;
-    margin-bottom:14px; font-size:18px;
+    margin-bottom:6px; font-size:14px;
   }
   .final-row {
     display:flex; align-items:center;
-    padding:10px 12px;
-    border-radius:8px;
-    margin-bottom:6px;
-    font-size:15px;
+    padding:6px 9px;
+    border-radius:6px;
+    margin-bottom:3px;
+    font-size:12px;
     background:#fff;
   }
   .final-row.you {
@@ -396,24 +393,24 @@
     border:2px solid #11998e;
     font-weight:bold;
   }
-  .final-row .fr-rank { width:40px; font-weight:bold; }
+  .final-row .fr-rank { width:30px; font-weight:bold; }
   .final-row .fr-name { flex:1; }
   .final-row .fr-wpm  { font-weight:bold; color:#667eea; }
   .final-row.you .fr-wpm { color:#11998e; }
 
   .result-actions {
-    display:flex; gap:12px; justify-content:center;
-    flex-wrap:wrap; margin-top:15px;
+    display:flex; gap:8px; justify-content:center;
+    flex-wrap:wrap; margin-top:8px;
   }
 
   .again-btn, .pdf-btn {
-    padding:14px 35px; font-size:16px; font-weight:bold;
-    border:none; border-radius:12px;
-    color:#fff; cursor:pointer; transition:all 0.25s;
+    padding:10px 25px; font-size:13px; font-weight:bold;
+    border:none; border-radius:9px;
+    color:#fff; cursor:pointer; transition:all 0.2s;
   }
   .again-btn { background:linear-gradient(135deg,#667eea,#764ba2); }
   .pdf-btn   { background:linear-gradient(135deg,#e74c3c,#c0392b); }
-  .again-btn:hover, .pdf-btn:hover { transform:scale(1.05); }
+  .again-btn:hover, .pdf-btn:hover { transform:scale(1.04); }
 
   /* মডাল */
   .modal-overlay {
@@ -427,50 +424,50 @@
   .modal-overlay.show { display:flex; }
 
   .modal {
-    background:#fff; border-radius:18px;
-    padding:25px; max-width:600px; width:100%;
+    background:#fff; border-radius:14px;
+    padding:20px; max-width:520px; width:100%;
     max-height:85vh; overflow-y:auto;
   }
-  .modal h3 { margin-bottom:15px; color:#333; }
+  .modal h3 { margin-bottom:10px; color:#333; font-size:16px; }
 
   .modal label {
     display:block; font-weight:bold; color:#555;
-    margin:12px 0 6px; font-size:14px;
+    margin:9px 0 4px; font-size:12px;
   }
 
   .modal select, .modal input, .modal textarea {
-    width:100%; padding:12px;
-    border:2px solid #ddd; border-radius:10px;
-    font-size:15px; outline:none;
+    width:100%; padding:9px;
+    border:2px solid #ddd; border-radius:7px;
+    font-size:13px; outline:none;
     font-family:inherit;
   }
   .modal select:focus, .modal input:focus, .modal textarea:focus { border-color:#667eea; }
-  .modal textarea { min-height:100px; resize:vertical; }
+  .modal textarea { min-height:85px; resize:vertical; }
 
   .modal-actions {
-    display:flex; gap:10px; margin-top:20px;
+    display:flex; gap:8px; margin-top:14px;
     justify-content:flex-end;
   }
   .modal-actions button {
-    padding:11px 25px; border:none; border-radius:10px;
-    font-size:15px; font-weight:bold; cursor:pointer;
+    padding:9px 20px; border:none; border-radius:7px;
+    font-size:12px; font-weight:bold; cursor:pointer;
   }
   .btn-cancel { background:#eee; color:#555; }
   .btn-save   { background:linear-gradient(135deg,#11998e,#38ef7d); color:#fff; }
   .btn-save:hover { transform:scale(1.03); }
 
-  .lb-table { width:100%; border-collapse:collapse; font-size:14px; }
-  .lb-table th { background:#667eea; color:#fff; padding:10px; text-align:left; font-weight:600; }
-  .lb-table td { padding:10px; border-bottom:1px solid #eee; }
+  .lb-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .lb-table th { background:#667eea; color:#fff; padding:7px; text-align:left; font-weight:600; }
+  .lb-table td { padding:7px; border-bottom:1px solid #eee; }
   .lb-table tr:hover td { background:#f7f7ff; }
   .lb-table .rank { font-weight:bold; color:#667eea; }
 
-  .empty-msg { text-align:center; padding:30px; color:#999; font-size:15px; }
+  .empty-msg { text-align:center; padding:22px; color:#999; font-size:13px; }
 
   .net-status {
-    position:fixed; top:10px; right:10px;
-    padding:6px 12px; border-radius:20px;
-    font-size:12px; font-weight:bold;
+    position:fixed; top:8px; right:8px;
+    padding:4px 9px; border-radius:16px;
+    font-size:10px; font-weight:bold;
     z-index:2000; transition:all 0.3s;
   }
   .net-status.online  { background:#d4edda; color:#155724; }
@@ -494,11 +491,15 @@
   #pdfArea .pdf-rank-row { padding:8px 12px; margin-bottom:5px; background:#fff; border-radius:6px; }
   #pdfArea .pdf-footer { text-align:center; margin-top:40px; color:#888; font-size:12px; }
 
-  @media(max-width:500px){
-    .text-display { font-size:17px; height:160px; }
-    .result-grid, #pdfArea .pdf-stats { grid-template-columns:1fr; }
-    .race-lane .lane-name { width:70px; font-size:12px; }
-    .race-lane .lane-wpm { width:45px; font-size:11px; }
+  @media(max-width:700px){
+    html, body { height:auto; overflow:auto; }
+    .container { height:auto; max-height:none; padding:15px; }
+    .scroll-area { overflow:visible; }
+    .game { height:auto; }
+    .text-display { max-height:none; }
+    .result { height:auto; overflow:visible; }
+    .result-grid { grid-template-columns:1fr 1fr; }
+    h1 { font-size:20px; }
   }
 
   @media print {
@@ -519,105 +520,111 @@
 <div class="container">
 
   <!-- ===== মেনু ===== -->
-  <div class="menu" id="menu">
+  <div class="menu" id="menu" style="display:flex; flex-direction:column; height:100%; overflow:hidden;">
     <h1>⌨️ টাইপিং প্র্যাকটিস</h1>
 
-    <div class="ad-slot" id="adTop">
-      <script>
-        atOptions = {
-          'key' : '567a76c37ef779af7433f0eb650ee08d',
-          'format' : 'iframe',
-          'height' : 90,
-          'width' : 728,
-          'params' : {}
-        };
-      </script>
-      <script src="https://www.highrevenueformat.com/567a76c37ef779af7433f0eb650ee08d/invoke.js"></script>
-    </div>
+    <div class="scroll-area">
 
-    <div class="section-label">শিক্ষার্থীর নাম (ঐচ্ছিক)</div>
-    <input type="text" class="name-input" id="studentName"
-           placeholder="এখানে আপনার নাম লিখুন... (না দিলেও চলবে)" maxlength="40">
-
-    <div class="section-label">খেলার মোড বাছুন</div>
-    <div class="mode-toggle" id="modeToggle">
-      <button id="btnSolo" class="active" onclick="setMode('solo')">👤 একা টাইপ</button>
-      <button id="btnRace" onclick="setMode('race')">🏁 একা রেস</button>
-    </div>
-
-    <!-- রেস সেটিংস -->
-    <div class="race-settings" id="raceSettings">
-      <div class="race-row">
-        <label>🤖 বট সংখ্যা:</label>
-        <select id="botCount">
-          <option value="1">১ জন</option>
-          <option value="2">২ জন</option>
-          <option value="3">৩ জন</option>
-          <option value="4" selected>৪ জন</option>
-          <option value="5">৫ জন</option>
-        </select>
+      <div class="ad-slot" id="adTop">
+        <script>
+          atOptions = {
+            'key' : '567a76c37ef779af7433f0eb650ee08d',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highrevenueformat.com/567a76c37ef779af7433f0eb650ee08d/invoke.js"></script>
       </div>
-      <div class="race-row">
-        <label>⚡ বটের গতি:</label>
-        <select id="botSpeed">
-          <option value="slow">🐢 ধীর (১৫-২৫ WPM)</option>
-          <option value="medium" selected>🙂 মাঝারি (২৫-৪০ WPM)</option>
-          <option value="fast">⚡ দ্রুত (৪০-৬০ WPM)</option>
-          <option value="random">🎲 র‍্যান্ডম (১৫-৬০ WPM)</option>
-          <option value="match">🎯 আমার সমান</option>
-        </select>
+
+      <div class="section-label">শিক্ষার্থীর নাম (ঐচ্ছিক)</div>
+      <input type="text" class="name-input" id="studentName"
+             placeholder="এখানে আপনার নাম লিখুন... (না দিলেও চলবে)" maxlength="40">
+
+      <div class="section-label">মোড নির্বাছন</div>
+      <div class="mode-toggle" id="modeToggle">
+        <button id="btnSolo" class="active" onclick="setMode('solo')">👤 একা টাইপ</button>
+        <button id="btnRace" onclick="setMode('race')">🏁 একা রেস</button>
       </div>
-    </div>
 
-    <div class="section-label">ভাষা নির্বাচন করুন</div>
-    <div class="lang-toggle">
-      <button id="btnBangla" class="active" onclick="setLang('bn')">বাংলা টাইপিং</button>
-      <button id="btnEnglish" onclick="setLang('en')">English Typing</button>
-    </div>
+      <div class="race-settings" id="raceSettings">
+        <div class="race-row">
+          <label>🤖 বট সংখ্যা:</label>
+          <select id="botCount">
+            <option value="1">১ জন</option>
+            <option value="2">২ জন</option>
+            <option value="3">৩ জন</option>
+            <option value="4" selected>৪ জন</option>
+            <option value="5">৫ জন</option>
+          </select>
+        </div>
+        <div class="race-row">
+          <label>⚡ বটের গতি:</label>
+          <select id="botSpeed">
+            <option value="slow">🐢 ধীর (১৫-২৫ WPM)</option>
+            <option value="medium" selected>🙂 মাঝারি (২৫-৪০ WPM)</option>
+            <option value="fast">⚡ দ্রুত (৪০-৬০ WPM)</option>
+            <option value="random">🎲 র‍্যান্ডম (১৫-৬০ WPM)</option>
+            <option value="match">🎯 আমার সমান</option>
+          </select>
+        </div>
+      </div>
 
-    <div class="section-label">
-      <span>বিষয় নির্বাচন করুন</span>
-      <button class="mini-btn" onclick="openLeaderboard()">🏆 লিডারবোর্ড</button>
-    </div>
-    <div class="options" id="catOptions">
-      <button class="opt-btn" data-cat="story">📖 গল্প</button>
-      <button class="opt-btn" data-cat="poem">🌸 কবিতা</button>
-      <button class="opt-btn" data-cat="science">🔬 বিজ্ঞান</button>
-      <button class="opt-btn" data-cat="sports">⚽ খেলাধুলা</button>
-      <button class="opt-btn" data-cat="tech">💻 প্রযুক্তি</button>
-      <button class="opt-btn active" data-cat="general">📝 সাধারণ</button>
-      <button class="opt-btn" data-cat="custom">✏️ নিজের টেক্সট</button>
-      <button class="opt-btn pangram-btn" data-cat="pangram">🔤 A Quick Brown Fox</button>
-    </div>
+      <!-- ===== ভাষা (English ডিফল্ট) ===== -->
+      <div class="section-label">ভাষা নির্বাচন করুন</div>
+      <div class="lang-toggle">
+        <button id="btnBangla" onclick="setLang('bn')">বাংলা টাইপিং</button>
+        <button id="btnEnglish" class="active" onclick="setLang('en')">English Typing</button>
+      </div>
 
-    <div class="section-label">সময় নির্বাচন করুন</div>
-    <div class="options" id="timeOptions">
-      <button class="opt-btn active" data-time="30">৩০ সেকেন্ড</button>
-      <button class="opt-btn" data-time="60">১ মিনিট</button>
-      <button class="opt-btn" data-time="120">২ মিনিট</button>
-      <button class="opt-btn" data-time="300">৫ মিনিট</button>
-      <button class="opt-btn" data-time="custom">⚙️ কাস্টম</button>
+      <div class="section-label">
+        <span>বিষয় নির্বাচন করুন</span>
+        <button class="mini-btn" onclick="openLeaderboard()">🏆 লিডারবোর্ড</button>
+      </div>
+      <div class="options" id="catOptions">
+        <button class="opt-btn" data-cat="story">📖 গল্প</button>
+        <button class="opt-btn" data-cat="poem">🌸 কবিতা</button>
+        <button class="opt-btn" data-cat="science">🔬 বিজ্ঞান</button>
+        <button class="opt-btn" data-cat="sports">⚽ খেলাধুলা</button>
+        <button class="opt-btn" data-cat="tech">💻 প্রযুক্তি</button>
+        <button class="opt-btn active" data-cat="general">📝 সাধারণ</button>
+        <button class="opt-btn" data-cat="custom">✏️ নিজের টেক্সট</button>
+        <button class="opt-btn pangram-btn" data-cat="pangram">🔤 A Quick Brown Fox</button>
+      </div>
+
+      <div class="section-label">সময় নির্বাচন করুন</div>
+      <div class="options" id="timeOptions">
+        <button class="opt-btn active" data-time="30">৩০ সেকেন্ড</button>
+        <button class="opt-btn" data-time="60">১ মিনিট</button>
+        <button class="opt-btn" data-time="120">২ মিনিট</button>
+        <button class="opt-btn" data-time="300">৫ মিনিট</button>
+        <button class="opt-btn" data-time="custom">⚙️ কাস্টম</button>
+      </div>
+
+      <div class="custom-time" id="customTimeBox">
+        <input type="number" id="customValue" value="3" min="1" max="60">
+        <select id="customUnit">
+          <option value="60">মিনিট</option>
+          <option value="1">সেকেন্ড</option>
+        </select>
+        <span>সময়</span>
+      </div>
+
+      <div class="section-label">লেভেল নির্বাচন করুন</div>
+      <div class="options" id="levelOptions">
+        <button class="opt-btn active" data-level="easy">সহজ</button>
+        <button class="opt-btn" data-level="medium">মাঝারি</button>
+        <button class="opt-btn" data-level="hard">কঠিন</button>
+      </div>
+
+      <div style="text-align:center;">
+        <button class="start-btn" onclick="startGame()">শুরু করুন 🚀</button>
+      </div>
+
+      <div class="ad-slot" id="adBottom"></div>
+
     </div>
-
-    <div class="custom-time" id="customTimeBox">
-      <input type="number" id="customValue" value="3" min="1" max="60">
-      <select id="customUnit">
-        <option value="60">মিনিট</option>
-        <option value="1">সেকেন্ড</option>
-      </select>
-      <span>সময়</span>
-    </div>
-
-    <div class="section-label">লেভেল নির্বাচন করুন</div>
-    <div class="options" id="levelOptions">
-      <button class="opt-btn active" data-level="easy">সহজ</button>
-      <button class="opt-btn" data-level="medium">মাঝারি</button>
-      <button class="opt-btn" data-level="hard">কঠিন</button>
-    </div>
-
-    <button class="start-btn" onclick="startGame()">শুরু করুন 🚀</button>
-
-    <div class="ad-slot" id="adBottom"></div>
   </div>
 
   <!-- ===== গেম ===== -->
@@ -627,7 +634,6 @@
       <button class="back-btn" onclick="confirmBack()">⬅ ফিরে যান</button>
     </div>
 
-    <!-- ===== রেস ট্র্যাক ===== -->
     <div class="race-track" id="raceTrack">
       <div class="race-track-title">🏁 লাইভ রেস ট্র্যাক</div>
       <div id="raceLanes"></div>
@@ -643,7 +649,7 @@
     <div class="text-display" id="textDisplay"></div>
 
     <input type="text" class="input-box" id="inputBox"
-           placeholder="এখানে টাইপ করুন..." autocomplete="off" spellcheck="false">
+           placeholder="Type here..." autocomplete="off" spellcheck="false">
 
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill"></div>
@@ -655,13 +661,12 @@
     <h2>🎉 সময় শেষ!</h2>
     <div class="student-name" id="resName"></div>
     <div class="result-grid">
-      <div class="result-card wpm-card"><div class="num" id="rWpm">0</div><div class="title">WPM (গতি)</div></div>
+      <div class="result-card wpm-card"><div class="num" id="rWpm">0</div><div class="title">WPM</div></div>
       <div class="result-card acc-card"><div class="num" id="rAcc">0%</div><div class="title">নির্ভুলতা</div></div>
       <div class="result-card err-card"><div class="num" id="rErr">0</div><div class="title">ভুল</div></div>
       <div class="result-card time-card"><div class="num" id="rTime">0s</div><div class="title">সময়</div></div>
     </div>
 
-    <!-- ফাইনাল র‍্যাংকিং -->
     <div class="final-ranking" id="finalRanking">
       <h3>🏆 চূড়ান্ত ফলাফল</h3>
       <div id="finalRankList"></div>
@@ -679,9 +684,9 @@
 
 <!-- ফিরে যাওয়ার মডাল -->
 <div class="modal-overlay" id="backModal">
-  <div class="modal" style="max-width:420px;text-align:center;">
-    <h3>⚠️ খেলা থেকে ফিরে যাবেন?</h3>
-    <p style="color:#666;font-size:14px;margin:10px 0 20px;">
+  <div class="modal" style="max-width:400px;text-align:center;">
+    <h3>⚠️ টাইপ থেকে ফিরে যাবেন?</h3>
+    <p style="color:#666;font-size:13px;margin:8px 0 16px;">
       এখন ফিরে গেলে এই স্কোর সেভ হবে না। আপনি কি নিশ্চিত?
     </p>
     <div class="modal-actions" style="justify-content:center;">
@@ -707,14 +712,14 @@
 <div class="modal-overlay" id="customModal">
   <div class="modal">
     <h3>✏️ নিজের টেক্সট যোগ করুন</h3>
-    <p style="font-size:13px;color:#666;margin-bottom:10px;">
-      যে বাক্যগুলো দিয়ে প্রশিক্ষণার্থীদের প্র্যাকটিস করাবেন, সেগুলো এখানে লিখুন। প্রতিটি বাক্য আলাদা লাইনে দিন।
+    <p style="font-size:12px;color:#666;margin-bottom:8px;">
+      প্রতিটি বাক্য আলাদা লাইনে লিখুন।
     </p>
 
     <label>ভাষা</label>
     <select id="ctLang">
       <option value="bn">বাংলা</option>
-      <option value="en">English</option>
+      <option value="en" selected>English</option>
     </select>
 
     <label>বিষয়</label>
@@ -735,7 +740,7 @@
     </select>
 
     <label>বাক্যগুলো (প্রতি লাইনে একটি)</label>
-    <textarea id="ctText" placeholder="যেমন:&#10;আজ আকাশ পরিষ্কার&#10;পাখিরা গান গাইছে"></textarea>
+    <textarea id="ctText" placeholder="যেমন:&#10;Today is a beautiful day&#10;Birds are singing"></textarea>
 
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeCustom()">বাতিল</button>
@@ -759,7 +764,7 @@
   </div>
 
   <div class="pdf-stats">
-    <div class="pdf-stat"><div class="n" id="pdfWpm">0</div><div class="t">WPM (গতি)</div></div>
+    <div class="pdf-stat"><div class="n" id="pdfWpm">0</div><div class="t">WPM</div></div>
     <div class="pdf-stat"><div class="n" id="pdfAcc">0%</div><div class="t">নির্ভুলতা</div></div>
     <div class="pdf-stat"><div class="n" id="pdfErr">0</div><div class="t">ভুল</div></div>
     <div class="pdf-stat"><div class="n" id="pdfTime">0s</div><div class="t">সময়</div></div>
@@ -770,21 +775,14 @@
     <div id="pdfRankList"></div>
   </div>
 
-  <div class="pdf-footer">
-    তৈরি: টাইপিং প্র্যাকটিস গেম
-  </div>
+  <div class="pdf-footer">তৈরি: টাইপিং প্র্যাকটিস গেম</div>
 </div>
 
 <script>
-/* =====================================================
-   বটের নামের পুল
-   ===================================================== */
+/* বট নাম */
 const BOT_NAMES_BN = ["রাহুল","ফাতেমা","করিম","সাদিয়া","ইমরান","নুসরাত","তানভীর","জান্নাত","রাকিব","মিতু"];
 const BOT_NAMES_EN = ["Rahul","Fatema","Karim","Sadia","Imran","Nusrat","Tanvir","Jannat","Rakib","Mitu"];
 
-/* =====================================================
-   টেক্সট ডেটাবেস
-   ===================================================== */
 const PANGRAM = "A Quick Brown Fox Jumps Over The Lazy Dog";
 
 const DEFAULT_TEXTS = {
@@ -854,9 +852,6 @@ const DEFAULT_TEXTS = {
   }
 };
 
-/* =====================================================
-   কাস্টম টেক্সট
-   ===================================================== */
 let CUSTOM_TEXTS = {};
 try {
   const saved = localStorage.getItem('typing_custom_texts');
@@ -872,9 +867,7 @@ function getTextPool(lang, cat, level){
   return DEFAULT_TEXTS[lang][cat][level];
 }
 
-/* =====================================================
-   সাউন্ড
-   ===================================================== */
+/* সাউন্ড */
 let audioCtx = null;
 function getAudioCtx(){
   if(!audioCtx){
@@ -900,38 +893,33 @@ function playFinish(){
     setTimeout(() => playBeep(freq, 0.25, 'triangle'), i * 120);
   });
 }
-function playOvertake(){
-  playBeep(880, 0.1, 'sine');
-}
 
-/* =====================================================
-   অনলাইন/অফলাইন
-   ===================================================== */
+/* অনলাইন/অফলাইন */
 function updateNetStatus(){
   const status = document.getElementById('netStatus');
   if(navigator.onLine){
     document.body.classList.remove('offline');
     status.className = 'net-status online';
-    status.textContent = '🌐 ';
+    status.textContent = '🌐';
     window.dispatchEvent(new Event('adsterra-online'));
   } else {
     document.body.classList.add('offline');
     status.className = 'net-status offline';
-    status.textContent = '📴 ';
+    status.textContent = '📴';
   }
 }
-window.addEventListener('online',  updateNetStatus);
+window.addEventListener('online', updateNetStatus);
 window.addEventListener('offline', updateNetStatus);
 updateNetStatus();
 
 /* =====================================================
-   স্টেট
+   স্টেট — ডিফল্ট ভাষা এখন English
    ===================================================== */
-let currentLang  = "bn";
+let currentLang  = "en";          // ← এখানে পরিবর্তন
 let selectedCat  = "general";
 let selectedTime = 30;
 let selectedLevel= "easy";
-let gameMode     = "solo"; // "solo" বা "race"
+let gameMode     = "solo";
 
 let timer = null;
 let botTimer = null;
@@ -945,11 +933,9 @@ let correctChars = 0;
 let wrongChars   = 0;
 let totalTyped   = 0;
 
-/* বটদের ডেটা */
 let bots = [];
 let finalBots = [];
 
-/* ====== মোড সেট ====== */
 function setMode(mode){
   gameMode = mode;
   const btnSolo = document.getElementById('btnSolo');
@@ -968,14 +954,12 @@ function setMode(mode){
   }
 }
 
-/* ====== ভাষা ====== */
 function setLang(lang){
   currentLang = lang;
   document.getElementById('btnBangla').classList.toggle('active', lang==='bn');
   document.getElementById('btnEnglish').classList.toggle('active', lang==='en');
 }
 
-/* ====== বিষয় ====== */
 document.querySelectorAll('#catOptions .opt-btn').forEach(btn => {
   btn.onclick = () => {
     if(btn.dataset.cat === 'custom'){ openCustom(); return; }
@@ -994,7 +978,6 @@ document.querySelectorAll('#catOptions .opt-btn').forEach(btn => {
   };
 });
 
-/* ====== সময় ====== */
 document.querySelectorAll('#timeOptions .opt-btn').forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll('#timeOptions .opt-btn').forEach(b=>b.classList.remove('active'));
@@ -1008,7 +991,6 @@ document.querySelectorAll('#timeOptions .opt-btn').forEach(btn => {
   };
 });
 
-/* ====== লেভেল ====== */
 document.querySelectorAll('#levelOptions .opt-btn').forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll('#levelOptions .opt-btn').forEach(b=>b.classList.remove('active'));
@@ -1017,7 +999,6 @@ document.querySelectorAll('#levelOptions .opt-btn').forEach(btn => {
   };
 });
 
-/* ====== বাক্য ====== */
 function getRandomSentence(){
   const pool = getTextPool(currentLang, selectedCat, selectedLevel);
   if(!pool || pool.length === 0){
@@ -1027,28 +1008,25 @@ function getRandomSentence(){
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-/* ====== বট তৈরি ====== */
 function createBots(){
   const count = parseInt(document.getElementById('botCount').value);
   const speed = document.getElementById('botSpeed').value;
   const names = currentLang === 'bn' ? BOT_NAMES_BN : BOT_NAMES_EN;
-
-  // নাম shuffled
   const shuffled = [...names].sort(() => Math.random() - 0.5);
 
   bots = [];
   for(let i=0; i<count; i++){
     let targetWpm;
-    if(speed === 'slow')        targetWpm = 15 + Math.random() * 10;   // 15-25
-    else if(speed === 'medium') targetWpm = 25 + Math.random() * 15;   // 25-40
-    else if(speed === 'fast')   targetWpm = 40 + Math.random() * 20;   // 40-60
-    else if(speed === 'random') targetWpm = 15 + Math.random() * 45;   // 15-60
-    else                        targetWpm = 30; // match — পরে সেট হবে
+    if(speed === 'slow')        targetWpm = 15 + Math.random() * 10;
+    else if(speed === 'medium') targetWpm = 25 + Math.random() * 15;
+    else if(speed === 'fast')   targetWpm = 40 + Math.random() * 20;
+    else if(speed === 'random') targetWpm = 15 + Math.random() * 45;
+    else                        targetWpm = 30;
 
     bots.push({
       name: shuffled[i] || ('Bot' + (i+1)),
       targetWpm: targetWpm,
-      currentWpm: targetWpm,
+      currentWpm: Math.round(targetWpm),
       progress: 0,
       chars: 0,
       finished: false
@@ -1056,12 +1034,10 @@ function createBots(){
   }
 }
 
-/* ====== রেস ট্র্যাক রেন্ডার ====== */
 function renderRaceTrack(){
   const lanes = document.getElementById('raceLanes');
   lanes.innerHTML = '';
 
-  // আপনি প্রথমে
   const myWpm = calculateLiveWPM();
   const myProgress = fullText.length > 0
       ? Math.min(100, (correctChars / (fullText.length * 0.9)) * 100)
@@ -1072,7 +1048,6 @@ function renderRaceTrack(){
     ...bots.map(b => ({ name: b.name, progress: b.progress, wpm: b.currentWpm, isYou: false }))
   ];
 
-  // প্রগ্রেস অনুযায়ী র‍্যাংক
   const sorted = [...allRacers].sort((a,b) => b.progress - a.progress);
 
   allRacers.forEach(racer => {
@@ -1085,9 +1060,7 @@ function renderRaceTrack(){
       <div class="rank-badge">${rankEmoji}</div>
       <div class="lane-name">${escapeHTML(racer.name)}</div>
       <div class="lane-track">
-        <div class="lane-fill" style="width:${racer.progress}%">
-          ${racer.progress > 15 ? Math.round(racer.progress) + '%' : ''}
-        </div>
+        <div class="lane-fill" style="width:${racer.progress}%"></div>
       </div>
       <div class="lane-wpm">${racer.wpm} WPM</div>
     `;
@@ -1095,13 +1068,11 @@ function renderRaceTrack(){
   });
 }
 
-/* ====== লাইভ WPM হিসাব ====== */
 function calculateLiveWPM(){
   const elapsed = (selectedTime - timeLeft) / 60;
   return elapsed > 0 ? Math.round((correctChars/5) / elapsed) : 0;
 }
 
-/* ====== গেম শুরু ====== */
 function startGame(){
   const nameInput = document.getElementById('studentName');
   const name = nameInput.value.trim();
@@ -1141,13 +1112,11 @@ function startGame(){
   document.getElementById('menu').style.display = 'none';
   document.getElementById('result').style.display = 'none';
   document.getElementById('finalRanking').classList.remove('show');
-  document.getElementById('game').style.display = 'block';
+  document.getElementById('game').style.display = 'flex';
 
-  // রেস মোড হলে ট্র্যাক দেখাও
   if(gameMode === 'race'){
     document.getElementById('raceTrack').classList.add('show');
     createBots();
-    // "match" হলে পরে ইউজারের WPM অনুযায়ী সেট হবে
   } else {
     document.getElementById('raceTrack').classList.remove('show');
     bots = [];
@@ -1187,7 +1156,6 @@ function startGame(){
   document.getElementById('textDisplay').scrollTop = 0;
 }
 
-/* ====== টেক্সট রেন্ডার ====== */
 function renderText(){
   const display = document.getElementById('textDisplay');
   display.innerHTML = '';
@@ -1206,7 +1174,6 @@ function renderText(){
   }
 }
 
-/* ====== ইনপুট ====== */
 function handleInput(e){
   if(!gameStarted){
     gameStarted = true;
@@ -1251,7 +1218,6 @@ function handleInput(e){
   if(gameMode === 'race') renderRaceTrack();
 }
 
-/* ====== ইউজার টাইমার ====== */
 function startTimer(){
   timer = setInterval(() => {
     timeLeft--;
@@ -1266,33 +1232,27 @@ function startTimer(){
   }, 1000);
 }
 
-/* ====== বট টাইমার ====== */
 function startBotTimer(){
   botTimer = setInterval(() => {
     if(timeLeft <= 0) return;
 
-    // "match" মোডে বটের গতি ইউজারের WPM-এর সাথে মিলাই
     const speedOpt = document.getElementById('botSpeed').value;
     const myWpm = calculateLiveWPM();
 
     bots.forEach(bot => {
       if(bot.finished) return;
 
-      // Target WPM নির্ধারণ
       let targetWpm = bot.targetWpm;
       if(speedOpt === 'match' && myWpm > 0){
-        targetWpm = myWpm * (0.85 + Math.random() * 0.3); // আমার ±15%
+        targetWpm = myWpm * (0.85 + Math.random() * 0.3);
       }
 
-      // ছোট fluctuation যোগ করি
       const fluctuation = (Math.random() - 0.5) * 6;
       bot.currentWpm = Math.max(5, Math.round(targetWpm + fluctuation));
 
-      // প্রতি সেকেন্ডে কত character টাইপ করবে
       const charsPerSec = (bot.currentWpm * 5) / 60;
       bot.chars += charsPerSec;
 
-      // প্রগ্রেস হিসাব (90% = finish)
       const totalChars = fullText.length * 0.9;
       bot.progress = Math.min(100, (bot.chars / totalChars) * 100);
 
@@ -1303,7 +1263,6 @@ function startBotTimer(){
   }, 1000);
 }
 
-/* ====== শেষ ====== */
 let finalStats = {};
 
 function finishGame(){
@@ -1333,7 +1292,6 @@ function finishGame(){
   playFinish();
   saveToLeaderboard(finalStats);
 
-  // বটদের ফাইনাল স্কোর সেভ
   finalBots = bots.map(b => ({ name: b.name, wpm: b.currentWpm, progress: b.progress }));
 
   document.getElementById('game').style.display = 'none';
@@ -1344,23 +1302,20 @@ function finishGame(){
   document.getElementById('rErr').textContent  = wrongChars;
   document.getElementById('rTime').textContent = (selectedTime - timeLeft) + 's';
 
-  // র‍্যাংকিং দেখাও (রেস মোড হলে)
   if(gameMode === 'race' && finalBots.length > 0){
     showFinalRanking();
   }
 }
 
-/* ====== চূড়ান্ত র‍্যাংকিং ====== */
 function showFinalRanking(){
   const finalRanking = document.getElementById('finalRanking');
   const rankList = document.getElementById('finalRankList');
 
   const myWpm = finalStats.wpm;
-  const myProgress = 100; // ইউজার শেষ করেছে
 
   const all = [
-    { name: '👤 আপনি', wpm: myWpm, isYou: true, progress: myProgress },
-    ...finalBots.map(b => ({ name: b.name, wpm: b.wpm, isYou: false, progress: b.progress }))
+    { name: '👤 আপনি', wpm: myWpm, isYou: true },
+    ...finalBots.map(b => ({ name: b.name, wpm: b.wpm, isYou: false }))
   ];
 
   all.sort((a,b) => b.wpm - a.wpm);
@@ -1379,15 +1334,11 @@ function showFinalRanking(){
   finalRanking.classList.add('show');
 }
 
-/* ====== হোম ====== */
 function goHome(){
   document.getElementById('result').style.display = 'none';
-  document.getElementById('menu').style.display = 'block';
+  document.getElementById('menu').style.display = 'flex';
 }
 
-/* =====================================================
-   ফিরে যাওয়া
-   ===================================================== */
 function confirmBack(){
   if(!gameStarted){ doBack(); return; }
   document.getElementById('backModal').classList.add('show');
@@ -1413,7 +1364,7 @@ function doBack(){
   document.getElementById('backModal').classList.remove('show');
   document.getElementById('game').style.display = 'none';
   document.getElementById('result').style.display = 'none';
-  document.getElementById('menu').style.display = 'block';
+  document.getElementById('menu').style.display = 'flex';
 
   gameStarted = false;
   timeLeft = 0;
@@ -1429,9 +1380,6 @@ function doBack(){
   setTimeout(() => document.getElementById('studentName').focus(), 100);
 }
 
-/* =====================================================
-   লিডারবোর্ড
-   ===================================================== */
 function saveToLeaderboard(stats){
   try {
     const key = 'typing_leaderboard';
@@ -1467,7 +1415,7 @@ function openLeaderboard(){
         + '<td>' + modeIcon + escapeHTML(s.name) + '</td>'
         + '<td><b>' + s.wpm + '</b></td>'
         + '<td>' + s.acc + '%</td>'
-        + '<td style="font-size:12px;color:#888;">' + escapeHTML(s.date || '') + '</td>'
+        + '<td style="font-size:11px;color:#888;">' + escapeHTML(s.date || '') + '</td>'
         + '</tr>';
     });
     html += '</tbody></table>';
@@ -1487,9 +1435,6 @@ function clearLeaderboard(){
   }
 }
 
-/* =====================================================
-   কাস্টম টেক্সট
-   ===================================================== */
 function openCustom(){ document.getElementById('customModal').classList.add('show'); }
 function closeCustom(){ document.getElementById('customModal').classList.remove('show'); }
 
@@ -1529,9 +1474,6 @@ function saveCustomText(){
   closeCustom();
 }
 
-/* =====================================================
-   PDF
-   ===================================================== */
 function downloadPDF(){
   const catNames = {
     story:'📖 গল্প', poem:'🌸 কবিতা', science:'🔬 বিজ্ঞান',
@@ -1541,7 +1483,6 @@ function downloadPDF(){
   };
   const levelNames = { easy:'সহজ', medium:'মাঝারি', hard:'কঠিন' };
   const langNames  = { bn:'বাংলা', en:'English' };
-  const modeNames  = { solo:'একা টাইপ', race:'একা রেস (বট)' };
 
   document.getElementById('pdfName').textContent  = finalStats.name;
   document.getElementById('pdfCat').textContent   = catNames[finalStats.cat] || finalStats.cat;
@@ -1553,7 +1494,6 @@ function downloadPDF(){
   document.getElementById('pdfTime').textContent  = finalStats.time + 's';
   document.getElementById('pdfDate').textContent  = finalStats.date;
 
-  // PDF-এ র‍্যাংকিং থাকলে
   const pdfRanking = document.getElementById('pdfRanking');
   const pdfRankList = document.getElementById('pdfRankList');
 
@@ -1587,10 +1527,9 @@ function escapeHTML(s){
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ====== ESC ====== */
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape'){
-    const inGame = document.getElementById('game').style.display === 'block';
+    const inGame = document.getElementById('game').style.display === 'flex';
     const inBackModal = document.getElementById('backModal').classList.contains('show');
     if(inBackModal){ closeBack(); }
     else if(inGame){ confirmBack(); }
