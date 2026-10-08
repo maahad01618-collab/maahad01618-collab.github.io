@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>টাইপিং প্র্যাকটিস</title>
 
-<!-- ===== আইকন ===== -->
 <link rel="icon" type="image/png" href="icon-512.png">
 <link rel="apple-touch-icon" href="icon-512.png">
 
@@ -29,7 +28,7 @@
   body.cat-pangram { background: linear-gradient(135deg,#f39c12,#e74c3c); }
 
   .container {
-    width:100%; max-width:850px;
+    width:100%; max-width:900px;
     background:rgba(255,255,255,0.97);
     border-radius:20px;
     padding:30px;
@@ -88,6 +87,49 @@
     background:linear-gradient(135deg,#c0392b,#8e0000);
     box-shadow:0 0 0 3px rgba(243,156,18,0.4);
   }
+
+  /* মোড টগল */
+  .mode-toggle {
+    display:flex; justify-content:center; gap:0;
+    margin:0 auto 10px; max-width:500px;
+    border:2px solid #667eea; border-radius:12px; overflow:hidden;
+  }
+  .mode-toggle button {
+    flex:1; padding:14px 10px; border:none; background:#fff;
+    cursor:pointer; font-size:15px; font-weight:bold; color:#667eea;
+    transition:all 0.25s;
+  }
+  .mode-toggle button.active {
+    background:linear-gradient(135deg,#667eea,#764ba2); color:#fff;
+  }
+  .mode-toggle button.race-active {
+    background:linear-gradient(135deg,#f39c12,#e74c3c); color:#fff;
+  }
+
+  /* রেস সেটিংস */
+  .race-settings {
+    display:none;
+    background:#fff9f0;
+    border:2px dashed #f39c12;
+    border-radius:12px;
+    padding:15px;
+    margin-top:12px;
+  }
+  .race-settings.show { display:block; }
+
+  .race-row {
+    display:flex; justify-content:center; align-items:center;
+    gap:10px; margin-bottom:10px; flex-wrap:wrap;
+  }
+  .race-row label {
+    font-weight:bold; color:#555; font-size:14px;
+  }
+  .race-row select, .race-row input {
+    padding:8px 12px; font-size:14px;
+    border:2px solid #ddd; border-radius:8px;
+    outline:none; cursor:pointer;
+  }
+  .race-row select:focus, .race-row input:focus { border-color:#f39c12; }
 
   .lang-toggle {
     display:flex; justify-content:center; gap:0;
@@ -187,6 +229,77 @@
     transform:scale(1.05);
   }
 
+  /* রেস ট্র্যাক */
+  .race-track {
+    display:none;
+    background:#f7f7ff;
+    border:2px solid #667eea;
+    border-radius:14px;
+    padding:15px;
+    margin-bottom:18px;
+  }
+  .race-track.show { display:block; }
+
+  .race-track-title {
+    font-size:14px; font-weight:bold; color:#667eea;
+    margin-bottom:12px; text-align:center;
+  }
+
+  .race-lane {
+    display:flex; align-items:center;
+    gap:8px; margin-bottom:8px;
+    padding:6px 10px;
+    border-radius:8px;
+    transition:background 0.2s;
+  }
+  .race-lane.you {
+    background:#e6fff5;
+    border:1px solid #11998e;
+  }
+  .race-lane .lane-name {
+    font-size:13px; font-weight:bold; color:#333;
+    width:100px; text-align:right;
+    flex-shrink:0;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .race-lane.you .lane-name { color:#11998e; }
+  .race-lane .lane-track {
+    flex:1;
+    height:22px;
+    background:#e8e8e8;
+    border-radius:11px;
+    position:relative;
+    overflow:hidden;
+  }
+  .race-lane .lane-fill {
+    height:100%;
+    background:linear-gradient(90deg,#667eea,#764ba2);
+    border-radius:11px;
+    width:0%;
+    transition:width 0.4s ease;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding-right:6px;
+    font-size:12px;
+    color:#fff;
+    font-weight:bold;
+  }
+  .race-lane.you .lane-fill {
+    background:linear-gradient(90deg,#11998e,#38ef7d);
+  }
+  .race-lane .lane-wpm {
+    font-size:12px; font-weight:bold; color:#666;
+    width:55px; text-align:right;
+    flex-shrink:0;
+  }
+  .race-lane.you .lane-wpm { color:#11998e; }
+
+  .race-lane .rank-badge {
+    width:24px; text-align:center;
+    font-size:15px; flex-shrink:0;
+  }
+
   .stats {
     display:flex; justify-content:space-around;
     margin-bottom:18px;
@@ -203,7 +316,7 @@
     border-radius:12px; border:2px solid #eee;
     margin-bottom:18px;
     letter-spacing:0.5px;
-    height:220px;
+    height:200px;
     overflow-y:auto;
     user-select:none;
     word-wrap:break-word;
@@ -254,6 +367,39 @@
   .acc-card .num  { color:#11998e; }
   .err-card .num  { color:#e74c3c; }
   .time-card .num { color:#f39c12; }
+
+  /* ফাইনাল র‍্যাংকিং */
+  .final-ranking {
+    display:none;
+    background:#f7f7ff;
+    border:2px solid #667eea;
+    border-radius:14px;
+    padding:18px;
+    margin:20px 0;
+    text-align:left;
+  }
+  .final-ranking.show { display:block; }
+  .final-ranking h3 {
+    text-align:center; color:#667eea;
+    margin-bottom:14px; font-size:18px;
+  }
+  .final-row {
+    display:flex; align-items:center;
+    padding:10px 12px;
+    border-radius:8px;
+    margin-bottom:6px;
+    font-size:15px;
+    background:#fff;
+  }
+  .final-row.you {
+    background:#e6fff5;
+    border:2px solid #11998e;
+    font-weight:bold;
+  }
+  .final-row .fr-rank { width:40px; font-weight:bold; }
+  .final-row .fr-name { flex:1; }
+  .final-row .fr-wpm  { font-weight:bold; color:#667eea; }
+  .final-row.you .fr-wpm { color:#11998e; }
 
   .result-actions {
     display:flex; gap:12px; justify-content:center;
@@ -313,42 +459,25 @@
   .btn-save   { background:linear-gradient(135deg,#11998e,#38ef7d); color:#fff; }
   .btn-save:hover { transform:scale(1.03); }
 
-  /* লিডারবোর্ড টেবিল */
-  .lb-table {
-    width:100%; border-collapse:collapse;
-    font-size:14px;
-  }
-  .lb-table th {
-    background:#667eea; color:#fff;
-    padding:10px; text-align:left;
-    font-weight:600;
-  }
-  .lb-table td {
-    padding:10px; border-bottom:1px solid #eee;
-  }
+  .lb-table { width:100%; border-collapse:collapse; font-size:14px; }
+  .lb-table th { background:#667eea; color:#fff; padding:10px; text-align:left; font-weight:600; }
+  .lb-table td { padding:10px; border-bottom:1px solid #eee; }
   .lb-table tr:hover td { background:#f7f7ff; }
   .lb-table .rank { font-weight:bold; color:#667eea; }
 
-  .empty-msg {
-    text-align:center; padding:30px;
-    color:#999; font-size:15px;
-  }
+  .empty-msg { text-align:center; padding:30px; color:#999; font-size:15px; }
 
-  /* অনলাইন/অফলাইন ইনডিকেটর */
   .net-status {
     position:fixed; top:10px; right:10px;
     padding:6px 12px; border-radius:20px;
     font-size:12px; font-weight:bold;
-    z-index:2000;
-    transition:all 0.3s;
+    z-index:2000; transition:all 0.3s;
   }
   .net-status.online  { background:#d4edda; color:#155724; }
   .net-status.offline { background:#f8d7da; color:#721c24; }
 
-  /* PDF এরিয়া */
   #pdfArea {
-    display:none;
-    padding:40px;
+    display:none; padding:40px;
     font-family:'Segoe UI', Tahoma, sans-serif;
   }
   #pdfArea h1 { text-align:center; color:#333; margin-bottom:10px; }
@@ -360,11 +489,16 @@
   #pdfArea .pdf-stat { text-align:center; padding:20px; background:#f7f7f7; border-radius:10px; }
   #pdfArea .pdf-stat .n { font-size:28px; font-weight:bold; color:#667eea; }
   #pdfArea .pdf-stat .t { font-size:12px; color:#666; margin-top:5px; }
+  #pdfArea .pdf-ranking { margin-top:20px; padding:15px; background:#f7f7f7; border-radius:10px; }
+  #pdfArea .pdf-ranking h3 { color:#667eea; margin-bottom:10px; }
+  #pdfArea .pdf-rank-row { padding:8px 12px; margin-bottom:5px; background:#fff; border-radius:6px; }
   #pdfArea .pdf-footer { text-align:center; margin-top:40px; color:#888; font-size:12px; }
 
   @media(max-width:500px){
-    .text-display { font-size:17px; height:180px; }
+    .text-display { font-size:17px; height:160px; }
     .result-grid, #pdfArea .pdf-stats { grid-template-columns:1fr; }
+    .race-lane .lane-name { width:70px; font-size:12px; }
+    .race-lane .lane-wpm { width:45px; font-size:11px; }
   }
 
   @media print {
@@ -380,7 +514,6 @@
 </head>
 <body class="cat-general">
 
-<!-- অনলাইন/অফলাইন ইন্ডিকেটর -->
 <div class="net-status online" id="netStatus">🌐</div>
 
 <div class="container">
@@ -389,7 +522,6 @@
   <div class="menu" id="menu">
     <h1>⌨️ টাইপিং প্র্যাকটিস</h1>
 
-    <!-- ===== বিজ্ঞাপনের জায়গা ১ (শুধু Top Banner 728x90) ===== -->
     <div class="ad-slot" id="adTop">
       <script>
         atOptions = {
@@ -406,6 +538,36 @@
     <div class="section-label">শিক্ষার্থীর নাম (ঐচ্ছিক)</div>
     <input type="text" class="name-input" id="studentName"
            placeholder="এখানে আপনার নাম লিখুন... (না দিলেও চলবে)" maxlength="40">
+
+    <div class="section-label">খেলার মোড বাছুন</div>
+    <div class="mode-toggle" id="modeToggle">
+      <button id="btnSolo" class="active" onclick="setMode('solo')">👤 একা টাইপ</button>
+      <button id="btnRace" onclick="setMode('race')">🏁 একা রেস</button>
+    </div>
+
+    <!-- রেস সেটিংস -->
+    <div class="race-settings" id="raceSettings">
+      <div class="race-row">
+        <label>🤖 বট সংখ্যা:</label>
+        <select id="botCount">
+          <option value="1">১ জন</option>
+          <option value="2">২ জন</option>
+          <option value="3">৩ জন</option>
+          <option value="4" selected>৪ জন</option>
+          <option value="5">৫ জন</option>
+        </select>
+      </div>
+      <div class="race-row">
+        <label>⚡ বটের গতি:</label>
+        <select id="botSpeed">
+          <option value="slow">🐢 ধীর (১৫-২৫ WPM)</option>
+          <option value="medium" selected>🙂 মাঝারি (২৫-৪০ WPM)</option>
+          <option value="fast">⚡ দ্রুত (৪০-৬০ WPM)</option>
+          <option value="random">🎲 র‍্যান্ডম (১৫-৬০ WPM)</option>
+          <option value="match">🎯 আমার সমান</option>
+        </select>
+      </div>
+    </div>
 
     <div class="section-label">ভাষা নির্বাচন করুন</div>
     <div class="lang-toggle">
@@ -455,7 +617,6 @@
 
     <button class="start-btn" onclick="startGame()">শুরু করুন 🚀</button>
 
-    <!-- ===== বিজ্ঞাপনের জায়গা ২ (এখন খালি) ===== -->
     <div class="ad-slot" id="adBottom"></div>
   </div>
 
@@ -464,6 +625,12 @@
     <div class="game-top">
       <div class="game-title" id="gameTitle">⌨️ টাইপিং চলছে...</div>
       <button class="back-btn" onclick="confirmBack()">⬅ ফিরে যান</button>
+    </div>
+
+    <!-- ===== রেস ট্র্যাক ===== -->
+    <div class="race-track" id="raceTrack">
+      <div class="race-track-title">🏁 লাইভ রেস ট্র্যাক</div>
+      <div id="raceLanes"></div>
     </div>
 
     <div class="stats">
@@ -494,7 +661,12 @@
       <div class="result-card time-card"><div class="num" id="rTime">0s</div><div class="title">সময়</div></div>
     </div>
 
-    <!-- ===== বিজ্ঞাপনের জায়গা ৩ (এখন খালি) ===== -->
+    <!-- ফাইনাল র‍্যাংকিং -->
+    <div class="final-ranking" id="finalRanking">
+      <h3>🏆 চূড়ান্ত ফলাফল</h3>
+      <div id="finalRankList"></div>
+    </div>
+
     <div class="ad-slot" id="adResult"></div>
 
     <div class="result-actions">
@@ -505,7 +677,7 @@
 
 </div>
 
-<!-- ===== ফিরে যাওয়ার কনফার্ম মডাল ===== -->
+<!-- ফিরে যাওয়ার মডাল -->
 <div class="modal-overlay" id="backModal">
   <div class="modal" style="max-width:420px;text-align:center;">
     <h3>⚠️ খেলা থেকে ফিরে যাবেন?</h3>
@@ -519,7 +691,7 @@
   </div>
 </div>
 
-<!-- ===== লিডারবোর্ড মডাল ===== -->
+<!-- লিডারবোর্ড -->
 <div class="modal-overlay" id="lbModal">
   <div class="modal">
     <h3>🏆 লিডারবোর্ড (টপ ২০)</h3>
@@ -531,7 +703,7 @@
   </div>
 </div>
 
-<!-- ===== নিজের টেক্সট মডাল ===== -->
+<!-- কাস্টম টেক্সট -->
 <div class="modal-overlay" id="customModal">
   <div class="modal">
     <h3>✏️ নিজের টেক্সট যোগ করুন</h3>
@@ -563,7 +735,7 @@
     </select>
 
     <label>বাক্যগুলো (প্রতি লাইনে একটি)</label>
-    <textarea id="ctText" placeholder="যেমন:&#10;আজ আকাশ পরিষ্কার&#10;পাখিরা গান গাইছে&#10;নদীর পানি স্বচ্ছ"></textarea>
+    <textarea id="ctText" placeholder="যেমন:&#10;আজ আকাশ পরিষ্কার&#10;পাখিরা গান গাইছে"></textarea>
 
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeCustom()">বাতিল</button>
@@ -572,10 +744,10 @@
   </div>
 </div>
 
-<!-- ===== PDF এরিয়া ===== -->
+<!-- PDF -->
 <div id="pdfArea">
   <div class="pdf-header">
-    <h1>⌨️ টাইপিং প্র্যাকটিস রিপোর্ট</h1>
+    <h1>⌨️ টাইপিং রেস রিপোর্ট</h1>
     <div id="pdfDate"></div>
   </div>
 
@@ -593,6 +765,11 @@
     <div class="pdf-stat"><div class="n" id="pdfTime">0s</div><div class="t">সময়</div></div>
   </div>
 
+  <div class="pdf-ranking" id="pdfRanking" style="display:none;">
+    <h3>🏆 চূড়ান্ত ফলাফল</h3>
+    <div id="pdfRankList"></div>
+  </div>
+
   <div class="pdf-footer">
     তৈরি: টাইপিং প্র্যাকটিস গেম
   </div>
@@ -600,7 +777,13 @@
 
 <script>
 /* =====================================================
-   ডিফল্ট টেক্সট ডেটাবেস
+   বটের নামের পুল
+   ===================================================== */
+const BOT_NAMES_BN = ["রাহুল","ফাতেমা","করিম","সাদিয়া","ইমরান","নুসরাত","তানভীর","জান্নাত","রাকিব","মিতু"];
+const BOT_NAMES_EN = ["Rahul","Fatema","Karim","Sadia","Imran","Nusrat","Tanvir","Jannat","Rakib","Mitu"];
+
+/* =====================================================
+   টেক্সট ডেটাবেস
    ===================================================== */
 const PANGRAM = "A Quick Brown Fox Jumps Over The Lazy Dog";
 
@@ -672,7 +855,7 @@ const DEFAULT_TEXTS = {
 };
 
 /* =====================================================
-   localStorage থেকে কাস্টম টেক্সট
+   কাস্টম টেক্সট
    ===================================================== */
 let CUSTOM_TEXTS = {};
 try {
@@ -681,9 +864,7 @@ try {
 } catch(e){ CUSTOM_TEXTS = {}; }
 
 function getTextPool(lang, cat, level){
-  if(cat === 'pangram'){
-    return [PANGRAM];
-  }
+  if(cat === 'pangram') return [PANGRAM];
   if(cat === 'custom'){
     const key = lang + '|' + level;
     return CUSTOM_TEXTS[key] || [];
@@ -719,9 +900,12 @@ function playFinish(){
     setTimeout(() => playBeep(freq, 0.25, 'triangle'), i * 120);
   });
 }
+function playOvertake(){
+  playBeep(880, 0.1, 'sine');
+}
 
 /* =====================================================
-   অনলাইন/অফলাইন ডিটেকশন
+   অনলাইন/অফলাইন
    ===================================================== */
 function updateNetStatus(){
   const status = document.getElementById('netStatus');
@@ -747,8 +931,10 @@ let currentLang  = "bn";
 let selectedCat  = "general";
 let selectedTime = 30;
 let selectedLevel= "easy";
+let gameMode     = "solo"; // "solo" বা "race"
 
 let timer = null;
+let botTimer = null;
 let timeLeft = 0;
 let gameStarted = false;
 let lastInputLen = 0;
@@ -758,6 +944,29 @@ let typedInput = "";
 let correctChars = 0;
 let wrongChars   = 0;
 let totalTyped   = 0;
+
+/* বটদের ডেটা */
+let bots = [];
+let finalBots = [];
+
+/* ====== মোড সেট ====== */
+function setMode(mode){
+  gameMode = mode;
+  const btnSolo = document.getElementById('btnSolo');
+  const btnRace = document.getElementById('btnRace');
+  const raceSettings = document.getElementById('raceSettings');
+
+  btnSolo.classList.remove('active','race-active');
+  btnRace.classList.remove('active','race-active');
+
+  if(mode === 'solo'){
+    btnSolo.classList.add('active');
+    raceSettings.classList.remove('show');
+  } else {
+    btnRace.classList.add('race-active');
+    raceSettings.classList.add('show');
+  }
+}
 
 /* ====== ভাষা ====== */
 function setLang(lang){
@@ -808,7 +1017,7 @@ document.querySelectorAll('#levelOptions .opt-btn').forEach(btn => {
   };
 });
 
-/* ====== র‍্যান্ডম বাক্য ====== */
+/* ====== বাক্য ====== */
 function getRandomSentence(){
   const pool = getTextPool(currentLang, selectedCat, selectedLevel);
   if(!pool || pool.length === 0){
@@ -818,7 +1027,81 @@ function getRandomSentence(){
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-/* ====== গেম শুরু (নাম অপশনাল) ====== */
+/* ====== বট তৈরি ====== */
+function createBots(){
+  const count = parseInt(document.getElementById('botCount').value);
+  const speed = document.getElementById('botSpeed').value;
+  const names = currentLang === 'bn' ? BOT_NAMES_BN : BOT_NAMES_EN;
+
+  // নাম shuffled
+  const shuffled = [...names].sort(() => Math.random() - 0.5);
+
+  bots = [];
+  for(let i=0; i<count; i++){
+    let targetWpm;
+    if(speed === 'slow')        targetWpm = 15 + Math.random() * 10;   // 15-25
+    else if(speed === 'medium') targetWpm = 25 + Math.random() * 15;   // 25-40
+    else if(speed === 'fast')   targetWpm = 40 + Math.random() * 20;   // 40-60
+    else if(speed === 'random') targetWpm = 15 + Math.random() * 45;   // 15-60
+    else                        targetWpm = 30; // match — পরে সেট হবে
+
+    bots.push({
+      name: shuffled[i] || ('Bot' + (i+1)),
+      targetWpm: targetWpm,
+      currentWpm: targetWpm,
+      progress: 0,
+      chars: 0,
+      finished: false
+    });
+  }
+}
+
+/* ====== রেস ট্র্যাক রেন্ডার ====== */
+function renderRaceTrack(){
+  const lanes = document.getElementById('raceLanes');
+  lanes.innerHTML = '';
+
+  // আপনি প্রথমে
+  const myWpm = calculateLiveWPM();
+  const myProgress = fullText.length > 0
+      ? Math.min(100, (correctChars / (fullText.length * 0.9)) * 100)
+      : 0;
+
+  const allRacers = [
+    { name: '👤 আপনি', progress: myProgress, wpm: myWpm, isYou: true },
+    ...bots.map(b => ({ name: b.name, progress: b.progress, wpm: b.currentWpm, isYou: false }))
+  ];
+
+  // প্রগ্রেস অনুযায়ী র‍্যাংক
+  const sorted = [...allRacers].sort((a,b) => b.progress - a.progress);
+
+  allRacers.forEach(racer => {
+    const rank = sorted.findIndex(r => r.name === racer.name) + 1;
+    const rankEmoji = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '#'+rank;
+
+    const lane = document.createElement('div');
+    lane.className = 'race-lane' + (racer.isYou ? ' you' : '');
+    lane.innerHTML = `
+      <div class="rank-badge">${rankEmoji}</div>
+      <div class="lane-name">${escapeHTML(racer.name)}</div>
+      <div class="lane-track">
+        <div class="lane-fill" style="width:${racer.progress}%">
+          ${racer.progress > 15 ? Math.round(racer.progress) + '%' : ''}
+        </div>
+      </div>
+      <div class="lane-wpm">${racer.wpm} WPM</div>
+    `;
+    lanes.appendChild(lane);
+  });
+}
+
+/* ====== লাইভ WPM হিসাব ====== */
+function calculateLiveWPM(){
+  const elapsed = (selectedTime - timeLeft) / 60;
+  return elapsed > 0 ? Math.round((correctChars/5) / elapsed) : 0;
+}
+
+/* ====== গেম শুরু ====== */
 function startGame(){
   const nameInput = document.getElementById('studentName');
   const name = nameInput.value.trim();
@@ -844,22 +1127,31 @@ function startGame(){
   if(selectedCat === 'custom'){
     const pool = getTextPool(currentLang, 'custom', selectedLevel);
     if(!pool || pool.length === 0){
-      alert('এই লেভেলে এখনো কোনো কাস্টম টেক্সট যোগ করা হয়নি। অনুগ্রহ করে নিজের টেক্সট যোগ করুন।');
+      alert('এই লেভেলে এখনো কোনো কাস্টম টেক্সট যোগ করা হয়নি।');
       openCustom();
       return;
     }
   }
 
-  if(selectedCat === 'pangram'){
-    setLang('en');
-  }
+  if(selectedCat === 'pangram') setLang('en');
 
   document.body.className = 'cat-' + (selectedCat === 'custom' ? 'general' : selectedCat);
   if(!navigator.onLine) document.body.classList.add('offline');
 
   document.getElementById('menu').style.display = 'none';
   document.getElementById('result').style.display = 'none';
+  document.getElementById('finalRanking').classList.remove('show');
   document.getElementById('game').style.display = 'block';
+
+  // রেস মোড হলে ট্র্যাক দেখাও
+  if(gameMode === 'race'){
+    document.getElementById('raceTrack').classList.add('show');
+    createBots();
+    // "match" হলে পরে ইউজারের WPM অনুযায়ী সেট হবে
+  } else {
+    document.getElementById('raceTrack').classList.remove('show');
+    bots = [];
+  }
 
   fullText = "";
   for(let i=0; i<4; i++) fullText += getRandomSentence() + " ";
@@ -877,6 +1169,8 @@ function startGame(){
   document.getElementById('progressFill').style.width = '100%';
 
   renderText();
+  if(gameMode === 'race') renderRaceTrack();
+
   const input = document.getElementById('inputBox');
   input.value = '';
   input.disabled = false;
@@ -914,7 +1208,11 @@ function renderText(){
 
 /* ====== ইনপুট ====== */
 function handleInput(e){
-  if(!gameStarted){ gameStarted = true; startTimer(); }
+  if(!gameStarted){
+    gameStarted = true;
+    startTimer();
+    if(gameMode === 'race') startBotTimer();
+  }
 
   const val = e.target.value;
   const newLen = val.length;
@@ -950,9 +1248,10 @@ function handleInput(e){
   document.getElementById('charLive').textContent = totalTyped;
 
   renderText();
+  if(gameMode === 'race') renderRaceTrack();
 }
 
-/* ====== টাইমার ====== */
+/* ====== ইউজার টাইমার ====== */
 function startTimer(){
   timer = setInterval(() => {
     timeLeft--;
@@ -967,11 +1266,51 @@ function startTimer(){
   }, 1000);
 }
 
-/* ====== শেষ (নাম না দিলে "শিক্ষার্থী") ====== */
+/* ====== বট টাইমার ====== */
+function startBotTimer(){
+  botTimer = setInterval(() => {
+    if(timeLeft <= 0) return;
+
+    // "match" মোডে বটের গতি ইউজারের WPM-এর সাথে মিলাই
+    const speedOpt = document.getElementById('botSpeed').value;
+    const myWpm = calculateLiveWPM();
+
+    bots.forEach(bot => {
+      if(bot.finished) return;
+
+      // Target WPM নির্ধারণ
+      let targetWpm = bot.targetWpm;
+      if(speedOpt === 'match' && myWpm > 0){
+        targetWpm = myWpm * (0.85 + Math.random() * 0.3); // আমার ±15%
+      }
+
+      // ছোট fluctuation যোগ করি
+      const fluctuation = (Math.random() - 0.5) * 6;
+      bot.currentWpm = Math.max(5, Math.round(targetWpm + fluctuation));
+
+      // প্রতি সেকেন্ডে কত character টাইপ করবে
+      const charsPerSec = (bot.currentWpm * 5) / 60;
+      bot.chars += charsPerSec;
+
+      // প্রগ্রেস হিসাব (90% = finish)
+      const totalChars = fullText.length * 0.9;
+      bot.progress = Math.min(100, (bot.chars / totalChars) * 100);
+
+      if(bot.progress >= 100) bot.finished = true;
+    });
+
+    if(gameMode === 'race') renderRaceTrack();
+  }, 1000);
+}
+
+/* ====== শেষ ====== */
 let finalStats = {};
 
 function finishGame(){
   clearInterval(timer);
+  clearInterval(botTimer);
+  timer = null;
+  botTimer = null;
   document.getElementById('inputBox').disabled = true;
 
   const elapsedMin = (selectedTime - timeLeft) / 60;
@@ -987,11 +1326,15 @@ function finishGame(){
     err: wrongChars,
     time: selectedTime - timeLeft,
     cat: selectedCat, level: selectedLevel, lang: currentLang,
+    mode: gameMode,
     date: new Date().toLocaleString('bn-BD')
   };
 
   playFinish();
   saveToLeaderboard(finalStats);
+
+  // বটদের ফাইনাল স্কোর সেভ
+  finalBots = bots.map(b => ({ name: b.name, wpm: b.currentWpm, progress: b.progress }));
 
   document.getElementById('game').style.display = 'none';
   document.getElementById('result').style.display = 'block';
@@ -1000,6 +1343,40 @@ function finishGame(){
   document.getElementById('rAcc').textContent  = acc + '%';
   document.getElementById('rErr').textContent  = wrongChars;
   document.getElementById('rTime').textContent = (selectedTime - timeLeft) + 's';
+
+  // র‍্যাংকিং দেখাও (রেস মোড হলে)
+  if(gameMode === 'race' && finalBots.length > 0){
+    showFinalRanking();
+  }
+}
+
+/* ====== চূড়ান্ত র‍্যাংকিং ====== */
+function showFinalRanking(){
+  const finalRanking = document.getElementById('finalRanking');
+  const rankList = document.getElementById('finalRankList');
+
+  const myWpm = finalStats.wpm;
+  const myProgress = 100; // ইউজার শেষ করেছে
+
+  const all = [
+    { name: '👤 আপনি', wpm: myWpm, isYou: true, progress: myProgress },
+    ...finalBots.map(b => ({ name: b.name, wpm: b.wpm, isYou: false, progress: b.progress }))
+  ];
+
+  all.sort((a,b) => b.wpm - a.wpm);
+
+  let html = '';
+  all.forEach((racer, i) => {
+    const rankEmoji = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#'+(i+1);
+    html += `<div class="final-row${racer.isYou ? ' you' : ''}">
+      <div class="fr-rank">${rankEmoji}</div>
+      <div class="fr-name">${escapeHTML(racer.name)}</div>
+      <div class="fr-wpm">${racer.wpm} WPM</div>
+    </div>`;
+  });
+
+  rankList.innerHTML = html;
+  finalRanking.classList.add('show');
 }
 
 /* ====== হোম ====== */
@@ -1009,28 +1386,29 @@ function goHome(){
 }
 
 /* =====================================================
-   ফিরে যাওয়ার ফিচার
+   ফিরে যাওয়া
    ===================================================== */
 function confirmBack(){
-  if(!gameStarted){
-    doBack();
-    return;
-  }
+  if(!gameStarted){ doBack(); return; }
   document.getElementById('backModal').classList.add('show');
   if(timer) clearInterval(timer);
+  if(botTimer) clearInterval(botTimer);
 }
 
 function closeBack(){
   document.getElementById('backModal').classList.remove('show');
   if(gameStarted && timeLeft > 0){
     startTimer();
+    if(gameMode === 'race') startBotTimer();
     document.getElementById('inputBox').focus();
   }
 }
 
 function doBack(){
   if(timer) clearInterval(timer);
+  if(botTimer) clearInterval(botTimer);
   timer = null;
+  botTimer = null;
 
   document.getElementById('backModal').classList.remove('show');
   document.getElementById('game').style.display = 'none';
@@ -1042,6 +1420,7 @@ function doBack(){
   typedInput = '';
   fullText = '';
   lastInputLen = 0;
+  bots = [];
 
   const inp = document.getElementById('inputBox');
   inp.value = '';
@@ -1076,15 +1455,16 @@ function openLeaderboard(){
   } catch(e){ list = []; }
 
   if(list.length === 0){
-    content.innerHTML = '<div class="empty-msg">এখনো কোনো স্কোর সেভ হয়নি।<br>প্রথমে লিখা শেষ করুন।</div>';
+    content.innerHTML = '<div class="empty-msg">এখনো কোনো স্কোর সেভ হয়নি।</div>';
   } else {
     let html = '<table class="lb-table"><thead><tr>'
       + '<th>#</th><th>নাম</th><th>WPM</th><th>Accuracy</th><th>তারিখ</th>'
       + '</tr></thead><tbody>';
     list.slice(0, 20).forEach((s, i) => {
+      const modeIcon = s.mode === 'race' ? '🏁 ' : '';
       html += '<tr>'
         + '<td class="rank">' + (i+1) + '</td>'
-        + '<td>' + escapeHTML(s.name) + '</td>'
+        + '<td>' + modeIcon + escapeHTML(s.name) + '</td>'
         + '<td><b>' + s.wpm + '</b></td>'
         + '<td>' + s.acc + '%</td>'
         + '<td style="font-size:12px;color:#888;">' + escapeHTML(s.date || '') + '</td>'
@@ -1108,7 +1488,7 @@ function clearLeaderboard(){
 }
 
 /* =====================================================
-   নিজের টেক্সট
+   কাস্টম টেক্সট
    ===================================================== */
 function openCustom(){ document.getElementById('customModal').classList.add('show'); }
 function closeCustom(){ document.getElementById('customModal').classList.remove('show'); }
@@ -1118,7 +1498,7 @@ function saveCustomText(){
   const level = document.getElementById('ctLevel').value;
   const raw   = document.getElementById('ctText').value.trim();
 
-  if(!raw){ alert('টেক্সট বক্স খালি। অনুগ্রহ করে কিছু বাক্য লিখুন।'); return; }
+  if(!raw){ alert('টেক্সট বক্স খালি।'); return; }
 
   const sentences = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
   if(sentences.length === 0){ alert('কোনো বৈধ বাক্য পাওয়া যায়নি।'); return; }
@@ -1145,12 +1525,12 @@ function saveCustomText(){
   document.querySelector('[data-level="'+level+'"]').classList.add('active');
   selectedLevel = level;
 
-  alert(sentences.length + 'টি বাক্য সেভ হয়েছে! এখন খেলা শুরু করতে পারেন।');
+  alert(sentences.length + 'টি বাক্য সেভ হয়েছে!');
   closeCustom();
 }
 
 /* =====================================================
-   PDF রিপোর্ট
+   PDF
    ===================================================== */
 function downloadPDF(){
   const catNames = {
@@ -1161,6 +1541,7 @@ function downloadPDF(){
   };
   const levelNames = { easy:'সহজ', medium:'মাঝারি', hard:'কঠিন' };
   const langNames  = { bn:'বাংলা', en:'English' };
+  const modeNames  = { solo:'একা টাইপ', race:'একা রেস (বট)' };
 
   document.getElementById('pdfName').textContent  = finalStats.name;
   document.getElementById('pdfCat').textContent   = catNames[finalStats.cat] || finalStats.cat;
@@ -1172,19 +1553,41 @@ function downloadPDF(){
   document.getElementById('pdfTime').textContent  = finalStats.time + 's';
   document.getElementById('pdfDate').textContent  = finalStats.date;
 
+  // PDF-এ র‍্যাংকিং থাকলে
+  const pdfRanking = document.getElementById('pdfRanking');
+  const pdfRankList = document.getElementById('pdfRankList');
+
+  if(gameMode === 'race' && finalBots.length > 0){
+    const myWpm = finalStats.wpm;
+    const all = [
+      { name: '👤 আপনি', wpm: myWpm, isYou: true },
+      ...finalBots.map(b => ({ name: b.name, wpm: b.wpm, isYou: false }))
+    ];
+    all.sort((a,b) => b.wpm - a.wpm);
+
+    let html = '';
+    all.forEach((racer, i) => {
+      const rankEmoji = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#'+(i+1);
+      html += `<div class="pdf-rank-row">
+        <b>${rankEmoji}</b> ${escapeHTML(racer.name)} — <b>${racer.wpm} WPM</b>
+      </div>`;
+    });
+    pdfRankList.innerHTML = html;
+    pdfRanking.style.display = 'block';
+  } else {
+    pdfRanking.style.display = 'none';
+  }
+
   setTimeout(() => window.print(), 200);
 }
 
-/* ====== Escape ====== */
 function escapeHTML(s){
   return String(s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* =====================================================
-   কীবোর্ড শর্টকাট — ESC
-   ===================================================== */
+/* ====== ESC ====== */
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape'){
     const inGame = document.getElementById('game').style.display === 'block';
@@ -1202,7 +1605,6 @@ function loadAdsIfOnline(){
     return;
   }
   document.querySelectorAll('.ad-slot').forEach(s => {
-    // শুধু adTop-এ অ্যাড আছে, অন্যগুলো ফাঁকা
     if(s.innerHTML.trim() !== '') s.style.display = 'flex';
     else s.style.display = 'none';
   });
